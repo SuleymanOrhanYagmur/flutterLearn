@@ -46,22 +46,9 @@ class MyApp extends StatelessWidget{
           
               onPressed: () {
               // Buton tıklama olayını burada ele alın
-              print('Butona tıklandı!'); // tıklandığı bilgisi buraya geldi debug kısmına geldi
-              int puan =150;
-              String cumle = "";
-              if(puan >= 50) {
-                cumle = "Gecti ";
-              }
-              else if(puan <50) {
-                cumle = "Kaldı";
-              }
-          
-              var alert = AlertDialog(// Bu alert ekrana bi bildiri yayınlıyor
-                title: Text("Sınav sonucu"),// başlık
-                content: Text(cumle),//içerik demek
-              );
-          
-              showDialog(context: context, builder: (BuildContext context) =>alert); // kendi widgetini oluşturduğunda buildcontext deki context buraya düştü 
+                  
+                  String mesaj = sinavHesapla(55);
+                mesajGoster(context,mesaj);
               },//builder de ilgili contextle ilgili neyin çalışması gerektiğini gösterir
               child: Text('Butona Tıkla'), // buton burda
             )
@@ -72,6 +59,32 @@ class MyApp extends StatelessWidget{
     ); 
     
   }
+  String sinavHesapla(int puan){
+
+  
+              String mesaj = "";
+              if(puan >= 50) {
+                mesaj = "Gecti ";
+              }
+              else if(puan <50) {
+                mesaj = "Kaldı";
+              }
+
+  return mesaj;              
+  }
 
 
+  void mesajGoster(BuildContext context,mesaj) {
+
+    print('Butona tıklandı!'); // tıklandığı bilgisi buraya geldi debug kısmına geldi
+
+              
+    var alert = AlertDialog(// Bu alert ekrana bi bildiri yayınlıyor
+      title: Text("Sınav sonucu"),// başlık
+      content: Text(mesaj),//içerik demek
+    );
+          
+    showDialog(context: context, builder: (BuildContext context) =>alert); // kendi widgetini oluşturduğunda buildcontext deki context buraya düştü 
+
+  }
 }
