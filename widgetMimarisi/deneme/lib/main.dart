@@ -3,15 +3,15 @@
 import 'package:flutter/material.dart';
 // ListWiew konusunda alıştırma, Buton konusunda alıştırma, Listeyi ekrana kısım kısım bastırma yönünde çalışma var
 void main(){
-  runApp(MaterialApp( // farklı cihazlarda uyum getiriri
-    home: MyApp()
+  runApp(MaterialApp( // Uygulamanın kök widget'ını tanımlar ve farklı cihazlarla uyum sağlar
+    home: MyApp()// MyApp widget'ını ana ekran olarak belirler
 
   )); 
 
 }
 
 class MyApp extends StatelessWidget{
-
+ // MyApp sınıfı StatelessWidget'tan türemiş, yani durum bilgisi olmayan bir widget
   String mesaj = "Bu benim uygulamam";
   @override
   Widget build(BuildContext context) {
