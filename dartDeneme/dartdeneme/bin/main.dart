@@ -1,25 +1,4 @@
 import 'package:dartdeneme/dartdeneme.dart' as dartdeneme;
-/*
-class Kisi {
-  String isim;
-  String soyisim;
-
-  // Kurucu fonksiyon
-  Kisi(this.isim, this.soyisim);
-
-  void bilgileriYazdir() {
-    print('İsim: $isim, Soyisim: $soyisim');
-  }
-}
-
-void main() {
-  // Bir Kisi nesnesi oluşturuyoruz
-  Kisi kisi1 = Kisi('Ali', 'Veli');
-
-  // Bilgileri yazdırıyoruz
-  kisi1.bilgileriYazdir();
-}
-*/
 
 
 void main() {
@@ -28,21 +7,46 @@ void main() {
 
   var customerManager = CustomerManager();
   
-  Person customer1 = Customer.withInfo("Salih", "Demiroğ");
+  Customer customer1 = new Customer.withInfo("Salih", "Demiroğ");
 
 
 
-  var customer2 = Customer();
+  var customer2 = new Customer();
   customer2.firstName = "Süleyman";
   customer2.lastName = "Orhan";
   
-  customerManager.add(customer1);
-  customerManager.add(customer2);
+  customer1 = customer2;
+  customer2.firstName = "Mehmet";
 
+
+
+  customerManager.add(customer1);
+  // Steak ve Heap bulunu
+
+  var controller = PersonController(); 
+
+  controller.operation(customer1); // sen burda customer gönderdin öbür tarafta Person olarak karşıladı ama sorun değil 
+  //Mehmet yazıcak çünkü customer içinde Person var extend ettiğimiz için
+
+  Personel personel1 = Personel();
+  personel1.firstName = "Fatma";
+
+  var controller2 = PersonController();  // burda PersonelController türünde oluşturuldu içerik türüne Personel gönderdik tür olarak yine gönderdiğimiz classta
+  //person türündeydi ama personu extend ettiğimiz için üsteeki örnektekş gibi çalıştı
+  
+
+  controller.operation(personel1); 
 
 
 }
 
+class PersonController {
+  void operation(Person person) {// sen burda parametre olarak person göndermiyorsun PARAMETRE OLARAK BELLEKTEKİ ADRESİ REFERANSI gönderiyorsun 
+    print("Inheritance demo: ${person.firstName}"); // sonuna + koyarak yazınca hata verdi böyle kullanıma izin veriyor
+    
+  } 
+
+}
 class PersonelManager {
   void add() {
     print("Personel eklendi!");
@@ -59,14 +63,25 @@ class PersonelManager {
 
 class CustomerManager {
   void add(Customer customer) {
-    print("Müşteri eklendi: "+ customer.firstName);
+    print("Müşteri eklendi: ${customer.firstName}");
+  }
+
+  void update() {
+    print("Güncellendi");
+
+  }
+  void delete() {
+    print("Silindi");
+
   }
 }
 
 class Customer extends Person{
 
 
-  Customer();
+  Customer(){
+
+  }
 
   Customer.withInfo(String firstName, String lastName) {
     this.firstName = firstName;
@@ -81,7 +96,9 @@ class Personel extends Person{ // Person'un içindeki özellikler aynı zamanda 
  
   int? dateOfStart;
 
-  Personel();
+  Personel(){
+
+  }
 
   Personel.withInfo(String firstName, String lastName, int dateOfStart) {
     this.firstName = firstName;
