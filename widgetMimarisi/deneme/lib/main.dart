@@ -1,5 +1,6 @@
 
 
+import 'package:deneme/models/student.dart';
 import 'package:flutter/material.dart';
 // ListWiew konusunda alıştırma, Buton konusunda alıştırma, Listeyi ekrana kısım kısım bastırma yönünde çalışma var
 void main(){
@@ -13,6 +14,10 @@ void main(){
 class MyApp extends StatelessWidget{
  // MyApp sınıfı StatelessWidget'tan türemiş, yani durum bilgisi olmayan bir widget
   String mesaj = "Bu benim uygulamam";
+
+  Student student1 = Student("Engin", "Demir",25);
+  
+  
   var ogrenciler = ["Suleyman Orhan", "Kemal Sunal", "Fatih Sultan Mehmet","Süleyman Çakır"];
 
   @override
