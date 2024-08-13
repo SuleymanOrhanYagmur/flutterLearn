@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget{
               leading: CircleAvatar( // en başa ekleme yapıyor
                 backgroundImage: NetworkImage("https://cdn.pixabay.com/photo/2016/09/07/11/37/sunset-1651426_1440_2560.jpg"),),
               title: Text(student1[index].firstName+ " "+ student1[index].lastName), // Başlık
-              subtitle: Text("Sınavdan aldığı not: " + student1[index].grade.toString()),
+              subtitle: Text("Sınavdan aldığı not: " + student1[index].grade.toString() + " [ " + student1[index].getStatus + " ]"),
               trailing: buildStatusIcon(student1[index].grade), // Bu satırın en sonuna ekleme yapıyor
               onTap: (){
                 print(student1[index].firstName+ " "+ student1[index].lastName);// ekranda tıkladığı anda debugconsole bildirim düşüyor

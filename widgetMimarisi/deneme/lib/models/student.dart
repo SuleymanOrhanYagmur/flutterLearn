@@ -2,15 +2,42 @@ class Student{
   late String firstName;
   late String lastName;
   late int grade;
-  late String status;
-
+  late String _status;// burada sadece getter methodu göstercek sadece okuruz çünkü grade bağlı olduğu için set etmemiz gerekmiyor
+  // get okumak öğrencinin first değerini okumak almak okumak
+  // set yazmak anlamına geliyor
   Student(String firstName, String lastName, int grade) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.grade = grade;
-    this.status = "Geçti";
+   
 
 
   }
+  String get getFirstName {
 
+    return "OGR - " + this.firstName; 
+  }
+
+  void setFirstName(String value) {
+    
+    this.firstName = value;
+
+  }
+
+  String get getStatus {
+                 String message = "";
+              if(this.grade>= 50) {
+                message = "Gecti ";
+              }
+              else if(this.grade >=40) {
+                message = "Bütünlemeye Kaldı";
+              }
+              else  {
+                message= "Kaldı";
+              }
+
+    return message;    
+     
+  }
+  
 }
