@@ -13,9 +13,9 @@ void main(){
 
 class MyApp extends StatelessWidget{
  // MyApp sınıfı StatelessWidget'tan türemiş, yani durum bilgisi olmayan bir widget
-  String mesaj = "Bu benim uygulamam";
+  String mesaj = "Öğrenci Takip Sistemi";
 
-  Student student1 = Student("Engin", "Demir",25);
+  List<Student> student1 = [Student("Engin", "Demir",25), Student("Kerem","Varis",65),Student("Halil","Duymaz",45)];
   
   
   var ogrenciler = ["Suleyman Orhan", "Kemal Sunal", "Fatih Sultan Mehmet","Süleyman Çakır"];
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget{
 
     return Scaffold(// 
       appBar: AppBar( //app bar isimli widget kullanılmış 
-        title: Text("Merhava ilk uygulamam" + mesaj), //text bile widget
+        title: Text( mesaj), //text bile widget
       ),
       body: buildBody(context), 
 
@@ -67,9 +67,18 @@ class MyApp extends StatelessWidget{
         children: <Widget> [
           Expanded( // size hataları olmaz bunun sayesinde Araya bağdaştırıcak widget bu 
             child: ListView.builder(
-              itemCount: ogrenciler.length,
+              itemCount: student1.length,
               itemBuilder: (BuildContext context,int index){ //eleman sayısı kadar içeriyi çalıştırmaya yarıyor
-              return Text(ogrenciler[index]);
+              return ListTile( // Her bir elemanın nereye yerleştirieceğini söyleyen kısımdır
+              leading: CircleAvatar( // en başa ekleme yapıyor
+                backgroundImage: NetworkImage("https://cdn.pixabay.com/photo/2016/09/07/11/37/sunset-1651426_1440_2560.jpg"),),
+              title: Text(student1[index].firstName+ " "+ student1[index].lastName), // Başlık
+              subtitle: Text("Sınavdan aldığı not: " + student1[index].grade.toString()),
+              trailing: buildStatusIcon(student1[index].grade), // Bu satırın en sonuna ekleme yapıyor
+              onTap: (){
+                print(student1[index].firstName+ " "+ student1[index].lastName);// ekranda tıkladığı anda debugconsole bildirim düşüyor
+              },
+              )   ;       //Text(student1[index].firstName); O NESNENİN HANGİ ALANINI İSTİYORSAK
 
 
               })
@@ -98,5 +107,22 @@ class MyApp extends StatelessWidget{
             ),
         ],
       );
+  }
+  
+  Widget buildStatusIcon(int grade) {
+  
+              if(grade > 50) {
+               return Icon(Icons.done);
+              }
+              else if(grade >=40) {
+                return Icon(Icons.album);
+
+            }
+            else {
+              return Icon(Icons.clear);
+            }
+    
+
+
   }
 }
