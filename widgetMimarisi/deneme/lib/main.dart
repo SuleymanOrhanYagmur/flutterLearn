@@ -10,15 +10,22 @@ void main(){
   )); 
 
 }
-
-class MyApp extends StatelessWidget{
+  //(STATELESSWİDGETLERDE) ekrana hızlı çizilen ama durum ihtiyacı olmayan widgetlerdir Bir değeri değiştirdiğinda değişen şeyler yansımamış oluyor
  // MyApp sınıfı StatelessWidget'tan türemiş, yani durum bilgisi olmayan bir widget
+class MyApp extends StatefulWidget{ 
+
+  @override
+  State<MyApp> createState() => _MyAppState();//MyAppState döndüren fonksiyon yaratıyorsunuz 
+}
+
+class _MyAppState extends State<MyApp> { 
   String mesaj = "Öğrenci Takip Sistemi";
 
-  List<Student> student1 = [Student("Engin", "Demir",25), Student("Kerem","Varis",65),Student("Halil","Duymaz",45)];
-  
-  
-  var ogrenciler = ["Suleyman Orhan", "Kemal Sunal", "Fatih Sultan Mehmet","Süleyman Çakır"];
+  Student selectedStudent = Student.withId(0,"","",0);
+
+  List<Student> student1 = [Student.withId(1,"Polat", "Alemdar",25), Student.withId(2,"Memati","Baş",65),Student.withId(3,"İskender","Büyük",45)];
+
+  //var ogrenciler = ["Suleyman Orhan", "Maraz Ali", "Fatih Sultan Mehmet","Süleyman Çakır"];
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +40,7 @@ class MyApp extends StatelessWidget{
     ); 
     
   }
+  /* Kod amacı sınav hesaplamaydı ama şu anlık işimiz yok
   String sinavHesapla(int puan){
 
   
@@ -45,8 +53,7 @@ class MyApp extends StatelessWidget{
               }
 
   return mesaj;              
-  }
-
+  }*/
 
   void mesajGoster(BuildContext context,mesaj) {
 
@@ -54,14 +61,14 @@ class MyApp extends StatelessWidget{
 
               
     var alert = AlertDialog(// Bu alert ekrana bi bildiri yayınlıyor
-      title: Text("Sınav sonucu"),// başlık
+      title: Text("İşlem sonucu"),// başlık
       content: Text(mesaj),//içerik demek
     );
           
     showDialog(context: context, builder: (BuildContext context) =>alert); // kendi widgetini oluşturduğunda buildcontext deki context buraya düştü 
 
   }
-  
+
   Widget buildBody( BuildContext context) { // Bizim normalde scaffoldun body kısmındaydı kodumuz ama inheritance class yapıları kullanarak kısımlara bölüyoruz
         return  Column(
         children: <Widget> [
@@ -76,7 +83,12 @@ class MyApp extends StatelessWidget{
               subtitle: Text("Sınavdan aldığı not: " + student1[index].grade.toString() + " [ " + student1[index].getStatus + " ]"),
               trailing: buildStatusIcon(student1[index].grade), // Bu satırın en sonuna ekleme yapıyor
               onTap: (){
-                print(student1[index].firstName+ " "+ student1[index].lastName);// ekranda tıkladığı anda debugconsole bildirim düşüyor
+                setState(() {// BU ŞU İŞE YARIYOR BUİLD İŞLEMİNİ ÇALIŞTIR SECİLİ OĞRENCİYİ KİM KULLANIYORSA YENİDEN ÇİZ DEMEK
+                selectedStudent =student1[index];
+                
+                  
+                });
+                print(selectedStudent.firstName);// ekranda tıkladığı anda debugconsole bildirim düşüyor
               },
               )   ;       //Text(student1[index].firstName); O NESNENİN HANGİ ALANINI İSTİYORSAK
 
@@ -91,24 +103,107 @@ class MyApp extends StatelessWidget{
                 Text("Fatih Sultan Mehmet"),
               ],
             ),*/
-          ),
-          Center(
+          ), // Lİstview expanded ile tüm boşluklrı kapattığı için aşağıdaki text aşağıda oldu
+
+
+          Text("Seçili Öğrenci: "+ selectedStudent.firstName),
+          Row(// yan yana koymayı öğretiyor
+            children: <Widget>[ // istediğin kadar yan yana koyabiliyorsun
+            Flexible( // satırın tamamına kendisini yapıştırır satır dediğimiz için
+              fit: FlexFit.tight,
+              flex: 2, // ne kadarlık pay verdiğini ifade eder
             child: ElevatedButton(
           
               onPressed: () {
               // Buton tıklama olayını burada ele alın
                   
-                  String mesaj = sinavHesapla(55);
+                  String mesaj = "Eklendi";
                 mesajGoster(context,mesaj);
               },//builder de ilgili contextle ilgili neyin çalışması gerektiğini gösterir
-              child: Text('Butona Tıkla'), // buton burda
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.add),  
+                  SizedBox(width: 10,),
+                  Text('Öğrenci'),
+                ],
+              ), // buton burda
             )
           
+            
             ),
+
+            Flexible( // satırın tamamına kendisini yapıştırır satır dediğimiz için
+              fit: FlexFit.tight,
+              flex: 1,
+            child: ElevatedButton(
+          
+              onPressed: () {
+              // Buton tıklama olayını burada ele alın
+                  
+                  String mesaj = "Güncellendi";
+                mesajGoster(context,mesaj);
+              },//builder de ilgili contextle ilgili neyin çalışması gerektiğini gösterir
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.update),
+                  SizedBox(width: 100.0,), // iconla text arasına boşluk eklemeni sağladı
+                  Text('Güncelle'), // bunu seçip ampulden row tıklayınca oluştu
+                ],
+              ), // buton burda
+            )
+          
+            
+            ),
+
+            Flexible( // satırın tamamına kendisini yapıştırır satır dediğimiz için
+              fit: FlexFit.tight,
+              flex: 1,
+            child: ElevatedButton(
+            
+                  
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.greenAccent,
+              ),
+              child: Row( // bulunan satırıda ilgili bölümde childenin içinde icon arasında boşluk için sizedbox ve text eklendi
+                children:<Widget> [
+                  Icon(Icons.delete),
+                  SizedBox(width: 100.0,),
+                  Text('Sil'),
+                ],
+              ), // buton burda
+
+                onPressed: () {
+                  // Buton tıklama olayını burada ele alın
+                  setState(() {
+
+                    student1.remove(selectedStudent);       //removeLast() Bu sonuncuyu siler removeAt indexi siler numara olarak remove objeyi siler 
+                  });
+                  
+                      String mesaj = "Silindi " + selectedStudent.firstName;
+                    mesajGoster(context,mesaj);
+                  },//builder de ilgili contextle ilgili neyin çalışması gerektiğini gösterir
+
+
+            )
+          
+            
+            )
+
+
+            ],
+
+          )
+          
         ],
       );
   }
-  
+
   Widget buildStatusIcon(int grade) {
   
               if(grade > 50) {
