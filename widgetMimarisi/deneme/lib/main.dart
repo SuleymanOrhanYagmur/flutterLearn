@@ -1,6 +1,7 @@
 
 
 import 'package:deneme/models/student.dart';
+import 'package:deneme/screens/student_add.dart';
 import 'package:flutter/material.dart';
 // ListWiew konusunda alıştırma, Buton konusunda alıştırma, Listeyi ekrana kısım kısım bastırma yönünde çalışma var
 void main(){
@@ -116,9 +117,9 @@ class _MyAppState extends State<MyApp> {
           
               onPressed: () {
               // Buton tıklama olayını burada ele alın
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentAdd())); // gitmesini istediğin yeri seçiyorsun bu şekilde gönderiyosun 
                   
-                  String mesaj = "Eklendi";
-                mesajGoster(context,mesaj);
+                 
               },//builder de ilgili contextle ilgili neyin çalışması gerektiğini gösterir
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueAccent,

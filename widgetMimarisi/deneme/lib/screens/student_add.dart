@@ -12,9 +12,18 @@ class StudentAdd extends StatefulWidget{
 
 class _StudentAddState extends State<StudentAdd>{
   @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+  Widget build(BuildContext context) { // widget ağacını çizdiğimiz yer burası
+    return Scaffold(
+
+      appBar: AppBar(
+
+        title: Text("Yeni öğrenci Ekle "),
+      
+
+      ),  
+      body: Center(child: Text("Öğrenci Formu burada olacak"),),
+
+    );
   }
 
 
