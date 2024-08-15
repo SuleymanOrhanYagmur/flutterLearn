@@ -15,6 +15,9 @@ class Student{
 
 
   }
+  Student.withoutInfo(){ // öğrenciye herhangi bilgi atamadan öğrenci oluşturmak
+
+  }
 
   Student( String firstName, String lastName, int grade) {
     this.firstName = firstName;
