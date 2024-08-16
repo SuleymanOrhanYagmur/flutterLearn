@@ -2,26 +2,24 @@ import 'package:deneme/models/student.dart';
 import 'package:deneme/validation/student_validator.dart';
 import 'package:flutter/material.dart';
 
-class StudentAdd extends StatefulWidget{
-  final List<Student> student1;
+class StudentEdit extends StatefulWidget{
+  Student selectedStudent;
 
-  StudentAdd(this.student1); // Varsayılan boş bir liste sağlıyoruz
+  StudentEdit(this.selectedStudent); // Varsayılan boş bir liste sağlıyoruz
   @override // statefullwidgetin içindeki createstate kullanıyoruz Zorunlu override edileiblir bi yapı olarak
   State<StatefulWidget> createState() { //eziyor ne yapmak istiyorsa onu yapıyor
     
-    return _StudentAddState(student1);  //_ o classa özel bir sınıf olduğunu anlatmak için kullanılır
+    return _StudentAddState(selectedStudent);  //_ o classa özel bir sınıf olduğunu anlatmak için kullanılır
   }// student1'i studentaddstate geçiriyoruz
 
 
 }
 
-class _StudentAddState extends State<StudentAdd> with StudentValidatorMixin{ //studentvalidateorMixin fıonksiyonları kullanıkabiliyor Mixin With ile kullanılır 
-  List<Student> student1;
-
-  var student = Student.withoutInfo(); 
+class _StudentAddState extends State with StudentValidatorMixin{ //studentvalidateorMixin fıonksiyonları kullanıkabiliyor Mixin With ile kullanılır 
+  Student selectedStudent;
   var formKey = GlobalKey<FormState>();
 
-  _StudentAddState(this.student1 ); // Varsayılan boş bir liste sağlıyoruz
+  _StudentAddState(this.selectedStudent ); // Varsayılan boş bir liste sağlıyoruz
   @override//
   Widget build(BuildContext context) { // widget ağacını çizdiğimiz yer burası
     return Scaffold(
@@ -59,7 +57,7 @@ class _StudentAddState extends State<StudentAdd> with StudentValidatorMixin{ //s
               ),
                 validator: validateFirstName, // İlgili alana girilecek formatın uygunluğunu kontrol eder
                 onSaved: (String? value) { // value nullable olmalı
-                  student.firstName = value ?? ''; // Null değerini handle eder
+                  selectedStudent.firstName = value ?? ''; // Null değerini handle eder
                 },
             );
   }
@@ -73,7 +71,7 @@ class _StudentAddState extends State<StudentAdd> with StudentValidatorMixin{ //s
               ),
                 validator: validateLastName, // İlgili alana girilecek formatın uygunluğunu kontrol eder
                 onSaved: (String? value) { // value nullable olmalı
-                  student.lastName = value ?? ''; // Null değerini handle eder
+                  selectedStudent.lastName = value ?? ''; // Null değerini handle eder
                 },
             );
   }
@@ -87,7 +85,7 @@ class _StudentAddState extends State<StudentAdd> with StudentValidatorMixin{ //s
               ),
                 validator: validateGradeName, // İlgili alana girilecek formatın uygunluğunu kontrol eder
                 onSaved: (String? value) { // value nullable olmalı
-                  student.grade = int.parse(value ?? '0'); // Null değerini handle eder
+                  selectedStudent.grade = int.parse(value ?? '0'); // Null değerini handle eder
                 },
             );
   }
@@ -101,8 +99,8 @@ class _StudentAddState extends State<StudentAdd> with StudentValidatorMixin{ //s
         if(formKey.currentState!.validate()) {
           formKey.currentState?.save();
            // bellekteki aynı adrese yapıştırmış oluyoruz 
-          
-          Navigator.pop(context, student); // Ana sayfaya geri dönerken yeni eklenen öğrenciyi gönderiyoruz
+          saveStudent(); // Kaydetme işlemi burada yapılır
+          Navigator.pop(context, selectedStudent); // Ana sayfaya geri dönerken yeni eklenen öğrenciyi gönderiyoruz
           //en son eklediği en üste eklliyor pop en üste eklenir  
         }
 
@@ -116,13 +114,10 @@ class _StudentAddState extends State<StudentAdd> with StudentValidatorMixin{ //s
   
   void saveStudent() {
 
-    print(student.firstName);
-    print(student.lastName);
-    print(student.grade);
-    setState(() {
-      
-      student1.add(student);
-    });
+    print(selectedStudent.firstName);
+    print(selectedStudent.lastName);
+    print(selectedStudent.grade);
+    
   }
 
 

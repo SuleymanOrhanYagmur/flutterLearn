@@ -115,11 +115,18 @@ class _MyAppState extends State<MyApp> {
               flex: 2, // ne kadarlık pay verdiğini ifade eder
             child: ElevatedButton(
           
-              onPressed: () {
+              onPressed: () async {
               // Buton tıklama olayını burada ele alın
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentAdd())); // gitmesini istediğin yeri seçiyorsun bu şekilde gönderiyosun 
-                  
-                 
+              final result = await  Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context)=>StudentAdd(student1))
+                ); // gitmesini istediğin yeri seçiyorsun bu şekilde gönderiyosun 
+                if(result != null && result is Student) {
+                  setState(() {
+                    student1.add(result);
+                  });
+                }  
+            
               },//builder de ilgili contextle ilgili neyin çalışması gerektiğini gösterir
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueAccent,
