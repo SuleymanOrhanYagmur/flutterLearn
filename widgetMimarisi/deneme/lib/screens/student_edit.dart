@@ -3,30 +3,30 @@ import 'package:deneme/validation/student_validator.dart';
 import 'package:flutter/material.dart';
 
 class StudentEdit extends StatefulWidget{
-  Student selectedStudent;
+  final Student selectedStudent;
 
   StudentEdit(this.selectedStudent); // Varsayılan boş bir liste sağlıyoruz
   @override // statefullwidgetin içindeki createstate kullanıyoruz Zorunlu override edileiblir bi yapı olarak
   State<StatefulWidget> createState() { //eziyor ne yapmak istiyorsa onu yapıyor
     
-    return _StudentAddState(selectedStudent);  //_ o classa özel bir sınıf olduğunu anlatmak için kullanılır
+    return _StudentEditState(selectedStudent);  //_ o classa özel bir sınıf olduğunu anlatmak için kullanılır
   }// student1'i studentaddstate geçiriyoruz
 
 
 }
 
-class _StudentAddState extends State with StudentValidatorMixin{ //studentvalidateorMixin fıonksiyonları kullanıkabiliyor Mixin With ile kullanılır 
-  Student selectedStudent;
-  var formKey = GlobalKey<FormState>();
+class _StudentEditState extends State<StudentEdit> with StudentValidatorMixin{ //studentvalidateorMixin fıonksiyonları kullanıkabiliyor Mixin With ile kullanılır 
+  final Student selectedStudent;
+  final  formKey = GlobalKey<FormState>();
 
-  _StudentAddState(this.selectedStudent ); // Varsayılan boş bir liste sağlıyoruz
+  _StudentEditState(this.selectedStudent ); // Varsayılan boş bir liste sağlıyoruz
   @override//
   Widget build(BuildContext context) { // widget ağacını çizdiğimiz yer burası
     return Scaffold(
 
       appBar: AppBar(
 
-        title: Text("Yeni öğrenci Ekle "),
+        title: Text("Öğrenci Güncelle "),
       
 
       ),  
@@ -38,7 +38,7 @@ class _StudentAddState extends State with StudentValidatorMixin{ //studentvalida
           children: <Widget>[
             buildFirstNameField(),
             buildLastNameField(),
-            buildGradeNameField(),
+            buildGradeField(),
             buildSubmitButton(),
 
           ],
@@ -50,7 +50,7 @@ class _StudentAddState extends State with StudentValidatorMixin{ //studentvalida
   
   Widget buildFirstNameField() {
     return TextFormField( // yeni bir class yapmış oluyoruz o yüzden return dedim
-
+     initialValue: selectedStudent.firstName,
               decoration: InputDecoration(
                 labelText: "Öğrenci Adı:",
                 hintText: "Süleyman",
@@ -64,6 +64,7 @@ class _StudentAddState extends State with StudentValidatorMixin{ //studentvalida
   
   Widget buildLastNameField() {
     return TextFormField( // yeni bir class yapmış oluyoruz o yüzden return dedim
+    initialValue: selectedStudent.lastName, // Bunun sayesinde baştaki değer ekranda gözükür 
 
               decoration: InputDecoration(
                 labelText: "Öğrenci SoyAdı:",
@@ -76,9 +77,9 @@ class _StudentAddState extends State with StudentValidatorMixin{ //studentvalida
             );
   }
   
-  Widget buildGradeNameField() {
+  Widget buildGradeField() {
     return TextFormField( // yeni bir class yapmış oluyoruz o yüzden return dedim
-
+    initialValue: selectedStudent.grade.toString(),
               decoration: InputDecoration(
                 labelText: "Öğrenci Notu:",
                 hintText: "100",
@@ -97,10 +98,10 @@ class _StudentAddState extends State with StudentValidatorMixin{ //studentvalida
         child: Text("Kaydet"),
         onPressed: (){ // beenim formlara erişmem lazım
         if(formKey.currentState!.validate()) {
-          formKey.currentState?.save();
+          formKey.currentState?.save();// save çalıştırdığında bellekteki referansı değiştiği için bellekteki referans değişmiş olucak
            // bellekteki aynı adrese yapıştırmış oluyoruz 
-          saveStudent(); // Kaydetme işlemi burada yapılır
-          Navigator.pop(context, selectedStudent); // Ana sayfaya geri dönerken yeni eklenen öğrenciyi gönderiyoruz
+          saveStudent(); // Kaydetme işlemi burada yapılır BUNU GBT ÇIKARTMIŞ
+          Navigator.pop(context, "Öğrenci güncellendi: ${selectedStudent.firstName} ${selectedStudent.lastName}"); // Ana sayfaya geri dönerken yeni eklenen öğrenciyi gönderiyoruz
           //en son eklediği en üste eklliyor pop en üste eklenir  
         }
 

@@ -2,6 +2,7 @@
 
 import 'package:deneme/models/student.dart';
 import 'package:deneme/screens/student_add.dart';
+import 'package:deneme/screens/student_edit.dart';
 import 'package:flutter/material.dart';
 // ListWiew konusunda alıştırma, Buton konusunda alıştırma, Listeyi ekrana kısım kısım bastırma yönünde çalışma var
 void main(){
@@ -117,7 +118,7 @@ class _MyAppState extends State<MyApp> {
           
               onPressed: () async {
               // Buton tıklama olayını burada ele alın
-              final result = await  Navigator.push(
+              final result = await  Navigator.push( // ekleme burasıydı
                 context, 
                 MaterialPageRoute(builder: (context)=>StudentAdd(student1))
                 ); // gitmesini istediğin yeri seçiyorsun bu şekilde gönderiyosun 
@@ -138,6 +139,7 @@ class _MyAppState extends State<MyApp> {
                   Text('Öğrenci'),
                 ],
               ), // buton burda
+              
             )
           
             
@@ -148,11 +150,23 @@ class _MyAppState extends State<MyApp> {
               flex: 1,
             child: ElevatedButton(
           
-              onPressed: () {
+              onPressed: () async {
               // Buton tıklama olayını burada ele alın
                   
-                  String mesaj = "Güncellendi";
-                mesajGoster(context,mesaj);
+                final result  = await  Navigator.push( // ekleme burasıydı
+                context, 
+                MaterialPageRoute(builder: (context)=>StudentEdit(selectedStudent)),  //burasıyla studentedite götür diyosun
+                );
+              if (result != null && result is String) {
+                    setState(() {
+                      /*selectedStudent.firstName = result.firstName;
+                      selectedStudent.lastName = result.lastName;
+                      selectedStudent.grade = result.grade;
+                   */
+                    mesajGoster(context, "Öğrenci güncellendi!");
+                  
+                   });
+                  }
               },//builder de ilgili contextle ilgili neyin çalışması gerektiğini gösterir
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange,
@@ -164,7 +178,7 @@ class _MyAppState extends State<MyApp> {
                   Text('Güncelle'), // bunu seçip ampulden row tıklayınca oluştu
                 ],
               ), // buton burda
-            )
+            ),
           
             
             ),
