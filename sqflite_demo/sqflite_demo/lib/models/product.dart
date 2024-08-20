@@ -17,7 +17,7 @@ class Product{
     var map = Map<String,dynamic>();  // Boş bir Map oluşturuluyor
     map["name"] = name;  // Ürünün adı Map'e ekleniyor
     map["description"]  = description;  // Ürünün açıklaması Map'e ekleniyor
-    map["unirPrice"] = unitPrice;  // Ürünün birim fiyatı Map'e ekleniyor
+    map["unitPrice"] = unitPrice;  // Ürünün birim fiyatı Map'e ekleniyor
     if(id != null ) {  // Eğer id değeri null değilse 
       map["id"] = id;  // id de Map'e ekleniyor
 

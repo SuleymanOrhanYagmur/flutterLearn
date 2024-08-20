@@ -11,9 +11,9 @@ class DbHelper {
   late Database _db;
   Future<Database> get db async { //asenkron çalışabillmesi için Future ile ilerde yapıcağımız işlemleri yapıyoruz gibi 
 
-    if(_db == null) {
-      _db = await initializeDb(); //await demek benim için aşağıdaki initializeDb çalışması önemli onuniçin sen bi bekle diyosun
-    }
+    
+    _db = await initializeDb(); //await demek benim için aşağıdaki initializeDb çalışması önemli onuniçin sen bi bekle diyosun
+    
 
     return _db;
   }
@@ -30,7 +30,9 @@ class DbHelper {
   }
 
   Future<void> createDb(Database db, int version) async { 
-    await db.execute("Create Table products(id integer primary key, name text, description text, unitPrice integer)"); //tablo ismi ve alanları veriyoruz
+    await db.execute(
+    "CREATE TABLE products(id INTEGER PRIMARY KEY, name TEXT, description TEXT, unitPrice REAL)");
+ //tablo ismi ve alanları veriyoruz
 
   }
 
