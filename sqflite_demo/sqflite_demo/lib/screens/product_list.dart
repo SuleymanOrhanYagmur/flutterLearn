@@ -4,14 +4,11 @@ import 'package:sqflite_demo/models/product.dart';
 import 'package:sqflite_demo/screens/product_add.dart';
 import 'package:sqflite_demo/screens/product_detail.dart';
 
-class ProductList extends StatefulWidget{
-  
+class ProductList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-
+    print("ProductList Widget State oluşturuluyor");
     return _ProductListState();
-
-
   }
 }
 
@@ -53,8 +50,9 @@ void initState() { // özel bir fonksiyon uygulama çalıştığında çalışı
       ),
     );
   }
-  
-  ListView buildProductList() { 
+
+  ListView buildProductList() {
+    print("buildProductList metodu çağrıldı");
 
     return ListView.builder(
       itemCount:  productCount,
@@ -72,14 +70,10 @@ void initState() { // özel bir fonksiyon uygulama çalıştığında çalışı
             onTap: (){ goToDetail(this.products[position]);
 
             },
-
           ),
-
         );
-      }
+      },
     );
-
-
   }
   
 void goToProductAdd() async {
