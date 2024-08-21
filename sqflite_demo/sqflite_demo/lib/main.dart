@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+
 import 'package:sqflite_demo/screens/product_list.dart';
 
 void main() {
-  runApp( MyApp());
+  
+  
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'E-Ticaret Uygulaması',  // Uygulamanızın adını ekleyebilirsiniz
       home: ProductList(),
     );
   }
-
-  
 }

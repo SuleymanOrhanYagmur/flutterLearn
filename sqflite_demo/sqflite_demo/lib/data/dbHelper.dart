@@ -1,77 +1,55 @@
 import 'dart:async';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_demo/models/product.dart';
 
 class DbHelper {
+  Database? _db; // Change late to nullable
 
-
-  
-  late Database _db;
-  Future<Database> get db async { //asenkron çalışabillmesi için Future ile ilerde yapıcağımız işlemleri yapıyoruz gibi 
-
-    if(_db == null) {
-      _db = await initializeDb(); //await demek benim için aşağıdaki initializeDb çalışması önemli onuniçin sen bi bekle diyosun
+  Future<Database> get db async {// ilerde çalışcağını kabul etmesi için async ve future ekledik
+    if (_db == null) { // İLK KEZ KURDU UYGULAMAYI VERİ TABANI OLUŞMAMIŞ OLUYO ilk kez açıldığı için 
+      _db = await initializeDb();//db ye ulaşmamız lazım o yüzden oluşturmak için bunu oluşturduk
     }
-
-    return _db;
+    
+      return _db!; // Use non-null assertion
   }
-// asenkron çalışmalar herşey sıralı giderken asenkronda yeni bi operasyon başka hatta çalışabiliyor 
 
-
-  
-  Future<Database> initializeDb() async{
-    String dbPath = join(await getDatabasesPath(),"etrade.db"); // sqflight feri tabanlarının yolunu veriyo olucak
-    //future streing asenkrona atıyosun diye await ekledik 
-    //join ilgili cihaza göre veriyor
-    var eTradeDb = await openDatabase(dbPath,version: 1,onCreate: createDb);
+  Future<Database> initializeDb() async { // Future asenkron çalışmadır sırayla gitmesini engeller herşeyle çalışabilir
+    String dbPath = join(await getDatabasesPath(), "etrade.db"); // veri tabanı yolu oluşturuyoruz dbPath ile, veritabanları yolunu biliyo join birleştirmeye yarıyor
+    var eTradeDb = await openDatabase(dbPath, version: 1, onCreate: createDb);//veri tabanı açıyo olucak dbPath, oncreate oluştur diyosun yoksa
     return eTradeDb;
   }
 
-  Future<void> createDb(Database db, int version) async { 
-    await db.execute("Create Table products(id integer primary key, name text, description text, unitPrice integer)"); //tablo ismi ve alanları veriyoruz
-
+  Future<void> createDb(Database db, int version) async {
+    await db.execute( //şu soruguyu bas diyoruz 
+        "CREATE table products(id integer primary key, name text, description text, unitPrice integer)");
   }
-
-
-  Future<List<Product>> getProducts() async { // tüm ürünleri getirmek için  BANA LİSTE DEĞİLDE ÜRÜN LSTESİ OLARAK DÖNSÜN DİYE PRODUCT EKLEDİK
-    Database db = await this.db; // database ulaşmam için  (operasyon olduğu için await deidğinde işlem biticek asenkron için)
-    var result = await db.query("products"); // db. dediğinde query sorgu yazabilceğin operasyon O tablo ismindeki tüm datayı sana getiriyim diyor 
-    return List.generate(result.length,(i){
-      return Product.fromObject(result[i]);//bir product oluşturuyo constructor bu ilk değerle her bir mapi gezdiğinde yeni ürün oluşturuyo onlar listeye eklenip dönüştürülüyo
+  //CRUD OPERASYONLARI: 
+  Future<List<Product>> getProducts() async { // Bize liste formatında gelmelidir Üürün listesi olarak dönsün
+    Database db = await this.db;
+    var result = await db.query("products"); 
+    return List.generate(result.length, (i) { // map formatından obje formatına çekmek için
+      return Product.fromObject(result[i]);
     });
-    
-    /*List.generate(result.length, (i){ // OBJE FORMATINA DÖNÜŞTÜRÜYORUZ generate denen operasyon kullandık lisstwview gibi düşün, 
-      return Product(  //bir product oluştur şunlar olsun gibi
-        id:result[i]["id"],name: result[i]["name"],
-      );
-    }); // liste döndürüyor 
-    Bu yukardakini tercih etmiyor bunun yerine bi map oluşturup onla halletsin bunla hepsini geziyo sonra listeye atıyor
-    */
   }
 
-  Future<int> insert(Product product) async {// ekleme gibi 1 kayıt eklendi 0 eklenemedi anlamak için int türünde yapıldı 
-    Database db = await this.db;// database ihtiyacım var o yüzden
-    var result = await db.insert("products", product.toMap());//string kolunun türü dynamic string alan dobule alan gibi map istiyor
-    return result; // producta ekliycen value istyiyo 1. tablo 2. parametre Map formatında ver diyo string ve dynamic string kolon adı 
-    // dynamictede ona göre string double gibi bi alan istiyor
-  } //to map yazdıktan sonra product nesnesine döndük
+  Future<int> insert(Product product) async {
+    Database db = await this.db;
+    var result = await db.insert("products", product.toMap());//map formatında gönder diyo 
+    return result;
+  }
 
-  Future<int> delete(int id) async {
-    Database db = await this.db;// database ihtiyacım var o yüzden
-    var result = await db.rawDelete("delete from products where id= $id"); // $ + demekle aynı şey
-    return result; 
-    
-  } 
+  Future<int> delete(int id) async { // id sini verdiğimiz elemanı siliyor olucaz
+    Database db = await this.db;
+    var result = await db.rawDelete("delete from products where id = $id"); //string birleştirme oluyor 
+    return result;
+  }
 
-  Future<int> update(Product product) async { 
-    Database db = await this.db;// database ihtiyacım var o yüzden
-
-    var result = await db.update("products",product.toMap(), where: "id=?",whereArgs: [product.id]); // ? mysql içinde parametre anlamında gelir sorgu içinde kullandğımızda  
-    return result; 
-    
-  } 
-
-
+  //Alttaki format daha güvenilir format
+  Future<int> update(Product product) async {
+    Database db = await this.db;
+    var result = await db.update("products", product.toMap(), //burdaki format daha doğru format delete içinde kullanabiliriz Bütün dattayı güncelliycek
+        where: "id = ?", whereArgs: [product.id]); //? parametre anlamına gelir sql içinde kullandığımızda,
+    return result;
+  }
 }
