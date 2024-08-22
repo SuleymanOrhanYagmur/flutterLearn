@@ -99,14 +99,15 @@ void goToProductAdd() async {
    } );
 }
 
-  void goToDetail(Product product) async{
+  void goToDetail(Product product) async {
+  bool? result = await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => ProductDetail(product)),
+  );
 
-    bool result = await Navigator.push(context,MaterialPageRoute(builder: (context)=> ProductDetail(product)));
-    if(result !=null){
-      if(result) {
-        getProducts();
-      }
-    }
+  if (result != null && result) {
+    getProducts();
   }
+}
 
 }

@@ -30,13 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-<<<<<<< HEAD
   sqflite: 
-=======
-  sqflite: ^2.0.0+4
-  sqflite_common_ffi: ^2.0.0+2
-  ffi: ^2.0.0
->>>>>>> 1a7aff3e345b183a3ee74deba287cb740953ff90
   path:
 
 
