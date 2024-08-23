@@ -1,6 +1,7 @@
-import 'package:http/http.dart' as http; // bi sürü refferans var direkt http ile erişebiilirsiniz diyosun
+import 'package:http/http.dart' as http;
+
 class CategoryApi {
-  static Future getcategory(){
-    return http.get(Uri.parse("http://10.0.2.2/categories")); // ben bu veriyi istiyorum diyosun
+  static Future getCategories() {
+    return http.get(Uri.parse("http://10.0.2.2:3000/categories")); // Emülatör için doğru URL
   }
 }

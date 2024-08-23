@@ -14,7 +14,7 @@ class Product {
       //id,categoryName, seoUrl alanları Category.fromJson constructorunda diğer kodlar çalışmadan önce başlatılır. Bu satede,nullable olmayan alanlar her zaman bir değerle başlatılmış olur
       : id = json["id"],
         categoryId = json["categoryId"],
-        productName = json["producyName"],
+        productName = json["productName"],
         quantityPerUnit = json["quantityPerUnit"],
         unitPrice = json["unitPrice"],
         unitsInStock = json["unitsInStock"];
